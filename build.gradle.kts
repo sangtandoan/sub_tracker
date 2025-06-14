@@ -1,10 +1,20 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.flywaydb:flyway-database-postgresql:11.9.1")
+    }
+}
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.5.0"
 	id("io.spring.dependency-management") version "1.1.7"
+    id("org.flywaydb.flyway") version "11.9.1"
 }
 
-group = "com.sangtandoan                                                   "
+group = "com.sangtandoan"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -39,4 +49,11 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+flyway {
+    url = "jdbc:postgresql://localhost:5432/${System.getenv("POSTGRES_DB")}"
+    user = "${System.getenv("POSTGRES_USER")}"
+    password = "${System.getenv("POSTGRES_PASSWORD")}"
+    cleanDisabled = false
 }
