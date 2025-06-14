@@ -6,5 +6,5 @@ import lombok.Data;
 public class AppError {
 
   private int statusCode;
-  private String error;
+  private Object error;
 }
