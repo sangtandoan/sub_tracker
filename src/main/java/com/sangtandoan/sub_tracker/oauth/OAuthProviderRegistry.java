@@ -1,7 +1,6 @@
 package com.sangtandoan.sub_tracker.oauth;
 
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class OAuthProviderRegistry {
     this.providerConfigs = Map.of(OAuthProvider.GOOGLE, googleOAuthConfig);
   }
 
-  public String generateAuthUrl(OAuthProvider provider, String redirectUri, String state) {
+  public String generateAuthUrl(OAuthProvider provider, String redirectUrl, String state) {
     var registration = this.providers.get(provider);
     if (registration == null) {
       throw new IllegalArgumentException("Unsupported provider: " + provider.toString());
@@ -42,7 +41,7 @@ public class OAuthProviderRegistry {
     var builder =
         UriComponentsBuilder.fromUriString(registration.getProviderDetails().getAuthorizationUri())
             .queryParam("client_id", registration.getClientId())
-            .queryParam("redirect_uri", redirectUri)
+            .queryParam("redirect_uri", redirectUrl)
             .queryParam("state", state)
             .queryParam("response_type", "code")
             .queryParam("scope", String.join(" ", registration.getScopes()));
@@ -55,21 +54,11 @@ public class OAuthProviderRegistry {
     return builder.toUriString();
   }
 
-  public Optional<OAuthConfig> getClientConfig(OAuthProvider provider) {
-    var config = this.providerConfigs.get(provider);
-    if (config == null) {
-      return Optional.empty();
-    }
-
-    return Optional.of(config);
+  public OAuthConfig getClientConfig(OAuthProvider provider) {
+    return this.providerConfigs.get(provider);
   }
 
-  public Optional<String> getUserInfoUri(OAuthProvider provider) {
-    var uri = this.providers.get(provider).getProviderDetails().getUserInfoEndpoint().getUri();
-    if (uri == null) {
-      return Optional.empty();
-    }
-
-    return Optional.of(uri);
+  public String getUserInfoUrl(OAuthProvider provider) {
+    return this.providers.get(provider).getProviderDetails().getUserInfoEndpoint().getUri();
   }
 }

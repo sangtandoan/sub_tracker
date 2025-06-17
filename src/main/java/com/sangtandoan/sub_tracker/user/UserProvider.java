@@ -1,7 +1,10 @@
 package com.sangtandoan.sub_tracker.user;
 
+import com.sangtandoan.sub_tracker.oauth.OAuthProvider;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -23,7 +26,10 @@ import lombok.Setter;
 public class UserProvider {
   @Id @GeneratedValue private UUID id;
 
-  private String providerName;
+  // Stores enum as string in db
+  @Enumerated(EnumType.STRING)
+  private OAuthProvider providerName;
+
   private String providerUserId;
 
   @Column(insertable = false, updatable = false)

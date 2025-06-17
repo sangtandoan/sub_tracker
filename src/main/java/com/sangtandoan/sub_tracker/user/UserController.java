@@ -20,8 +20,7 @@ public class UserController {
   private final UserMapper userMapper;
 
   @PostMapping
-  public ResponseEntity<?> createNewUser(
-      @Valid @RequestBody NewUserRequest requset, UriComponentsBuilder uriBuilder) {
+  public ResponseEntity<?> createNewUser(@Valid @RequestBody NewUserRequest requset) {
     var user = this.userRepo.findByEmail(requset.getEmail()).orElse(null);
     if (user != null) {
       throw new UserExistsException();
@@ -33,8 +32,9 @@ public class UserController {
 
     this.userRepo.save(user);
 
-    var userUri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
+    var userUrl =
+        UriComponentsBuilder.fromUriString("/users/{id}").buildAndExpand(user.getId()).toUri();
 
-    return ResponseEntity.created(userUri).body(this.userMapper.toDto(user));
+    return ResponseEntity.created(userUrl).body(this.userMapper.toDto(user));
   }
 }
