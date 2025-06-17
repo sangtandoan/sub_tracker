@@ -38,6 +38,7 @@ public class OAuthService {
     return new OAuthUrlResponse(authUrl, STATE);
   }
 
+  @Transactional
   public LoginResponse handleGoogleCallback(String code, String state, String redirectUrl) {
     // Validates state
     // TODO: change to valkey to check
@@ -79,7 +80,6 @@ public class OAuthService {
     }
   }
 
-  @Transactional
   private User findOrCreateUser(GoogleUserInfo userInfo) {
     var user = this.userRepo.findByEmail(userInfo.getEmail()).orElse(null);
     if (user == null) {
