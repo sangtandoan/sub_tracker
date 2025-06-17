@@ -7,3 +7,8 @@ spring:
     password: ${POSTGRES_PASSWORD}
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+token:
+  jwt:
+    token-duration: 86400
+    secret-key: ${JWT_SECRET}

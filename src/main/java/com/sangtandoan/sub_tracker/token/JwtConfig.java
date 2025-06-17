@@ -2,13 +2,13 @@ package com.sangtandoan.sub_tracker.token;
 
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "token.jwt")
-@Getter
+@Data
 public class JwtConfig {
   private long tokenDuration;
   private String secretKey;

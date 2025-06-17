@@ -5,8 +5,10 @@ import io.jsonwebtoken.Jwts;
 import java.util.Date;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
+@Service
 public class JwtService implements TokenService {
   private final JwtConfig jwtConfig;
 
