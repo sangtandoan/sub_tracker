@@ -1,8 +1,5 @@
-package com.sangtandoan.sub_tracker.mappers;
+package com.sangtandoan.sub_tracker.user;
 
-import com.sangtandoan.sub_tracker.dtos.NewUserRequest;
-import com.sangtandoan.sub_tracker.dtos.UserDto;
-import com.sangtandoan.sub_tracker.entities.User;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

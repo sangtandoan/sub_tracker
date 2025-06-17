@@ -1,5 +1,6 @@
-package com.sangtandoan.sub_tracker.exceptions;
+package com.sangtandoan.sub_tracker.user.exceptions;
 
+import com.sangtandoan.sub_tracker.exceptions.BaseAppException;
 import org.springframework.http.HttpStatus;
 
 public class UserNotFoundException extends BaseAppException {

@@ -1,6 +1,5 @@
-package com.sangtandoan.sub_tracker.repositories;
+package com.sangtandoan.sub_tracker.user;
 
-import com.sangtandoan.sub_tracker.entities.User;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,15 +1,13 @@
-package com.sangtandoan.sub_tracker.entities;
+package com.sangtandoan.sub_tracker.user;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,20 +19,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "users_providers")
+public class UserProvider {
   @Id @GeneratedValue private UUID id;
 
-  private String email;
-  private String name;
-  private byte[] password;
-  private boolean emailVerified = false;
+  private String providerName;
+  private String providerUserId;
 
   @Column(insertable = false, updatable = false)
   private LocalDateTime createdAt;
 
-  private LocalDateTime updatedAt = LocalDateTime.now();
-
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<UserProvider> providers = new HashSet<>();
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 }

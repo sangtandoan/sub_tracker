@@ -1,4 +1,4 @@
-package com.sangtandoan.sub_tracker.dtos;
+package com.sangtandoan.sub_tracker.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

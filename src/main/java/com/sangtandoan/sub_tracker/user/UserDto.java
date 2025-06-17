@@ -1,4 +1,4 @@
-package com.sangtandoan.sub_tracker.dtos;
+package com.sangtandoan.sub_tracker.user;
 
 import java.util.UUID;
 import lombok.Data;

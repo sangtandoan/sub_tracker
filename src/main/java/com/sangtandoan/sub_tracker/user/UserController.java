@@ -1,9 +1,6 @@
-package com.sangtandoan.sub_tracker.controllers;
+package com.sangtandoan.sub_tracker.user;
 
-import com.sangtandoan.sub_tracker.dtos.NewUserRequest;
-import com.sangtandoan.sub_tracker.exceptions.UserExistsException;
-import com.sangtandoan.sub_tracker.mappers.UserMapper;
-import com.sangtandoan.sub_tracker.repositories.UserRepo;
+import com.sangtandoan.sub_tracker.user.exceptions.UserExistsException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
