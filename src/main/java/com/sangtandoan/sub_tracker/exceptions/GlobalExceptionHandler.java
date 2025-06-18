@@ -1,10 +1,14 @@
 package com.sangtandoan.sub_tracker.exceptions;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,6 +25,44 @@ public class GlobalExceptionHandler {
 
     error.setStatusCode(e.getHttpStatus().value());
     error.setError(e.getMessage());
+
+    return ResponseEntity.status(statusCode).body(error);
+  }
+
+  @ExceptionHandler(InvalidEnumException.class)
+  public ResponseEntity<AppError> handleInvalidEnumException(InvalidEnumException e) {
+    var err = new AppError();
+    var statusCode = e.getHttpStatus();
+    var enumClass = e.getEnumClass();
+
+    err.setStatusCode(statusCode.value());
+
+    List<String> validValues =
+        Arrays.stream(enumClass.getEnumConstants())
+            .map(Enum::toString)
+            .collect(Collectors.toList());
+
+    err.setError(Map.of("message", e.getMessage(), "validValues", validValues));
+
+    return ResponseEntity.status(statusCode.value()).body(err);
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<AppError> handleHttpMessageNotReadableException(
+      HttpMessageNotReadableException e) {
+    // Get the root cause of the exception
+    var rootCause = e.getRootCause();
+
+    // Check if the root cause is instance of InvalidEnumException
+    if (rootCause instanceof InvalidEnumException) {
+      return this.handleInvalidEnumException((InvalidEnumException) rootCause);
+    }
+
+    var error = new AppError();
+    var statusCode = HttpStatus.BAD_REQUEST.value();
+
+    error.setStatusCode(statusCode);
+    error.setError("Invalid request format: " + e.getMessage());
 
     return ResponseEntity.status(statusCode).body(error);
   }
@@ -52,6 +94,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<AppError> handleRuntimeException(RuntimeException e) {
 
     log.error(e.getMessage());
+    log.info(e.getClass().toString());
 
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
   }
