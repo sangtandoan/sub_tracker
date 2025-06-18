@@ -21,14 +21,14 @@ public class UserController {
   private final UserMapper userMapper;
 
   @PostMapping
-  public ResponseEntity<?> createNewUser(@Valid @RequestBody NewUserRequest requset) {
-    var user = this.userRepo.findByEmail(requset.getEmail()).orElse(null);
+  public ResponseEntity<?> createNewUser(@Valid @RequestBody NewUserRequest request) {
+    var user = this.userRepo.findByEmail(request.getEmail()).orElse(null);
     if (user != null) {
       throw new UserExistsException();
     }
 
-    user = this.userMapper.toEntity(requset);
-    var hashedPassword = this.passwordEncoder.encode(requset.getPassword());
+    user = this.userMapper.toEntity(request);
+    var hashedPassword = this.passwordEncoder.encode(request.getPassword());
     user.setPassword(hashedPassword.getBytes());
 
     this.userRepo.save(user);

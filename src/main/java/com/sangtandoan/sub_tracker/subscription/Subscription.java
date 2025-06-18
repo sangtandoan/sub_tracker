@@ -2,8 +2,6 @@ package com.sangtandoan.sub_tracker.subscription;
 
 import com.sangtandoan.sub_tracker.user.User;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -29,8 +27,8 @@ public class Subscription {
   private String name;
   private LocalDate startDate;
   private LocalDate endDate;
+  private boolean isCancelled = false;
 
-  @Enumerated(EnumType.STRING)
   private SubscriptionDuration duration;
 
   @ManyToOne

@@ -26,7 +26,7 @@ import lombok.Setter;
 public class UserProvider {
   @Id @GeneratedValue private UUID id;
 
-  // Stores enum as string in db
+  // Stores enum as String in db
   @Enumerated(EnumType.STRING)
   private OAuthProvider providerName;
 

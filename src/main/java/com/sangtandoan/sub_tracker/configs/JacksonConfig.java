@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JacksonConfig {
+
+  // Using this to change the format of LocalDate and LocalDateTime serialization and
+  // deserialization
   @Bean
   public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
 
