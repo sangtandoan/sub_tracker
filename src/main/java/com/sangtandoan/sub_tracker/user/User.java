@@ -1,5 +1,6 @@
 package com.sangtandoan.sub_tracker.user;
 
+import com.sangtandoan.sub_tracker.subscription.Subscription;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,4 +38,10 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<UserProvider> providers = new HashSet<>();
+
+  @OneToMany(
+      mappedBy = "user",
+      cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
+  private Set<Subscription> subscriptions = new HashSet<>();
 }
