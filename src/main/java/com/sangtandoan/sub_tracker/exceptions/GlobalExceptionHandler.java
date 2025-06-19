@@ -1,5 +1,6 @@
 package com.sangtandoan.sub_tracker.exceptions;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 @Slf4j
@@ -47,15 +49,31 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(statusCode.value()).body(err);
   }
 
-  @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<AppError> handleHttpMessageNotReadableException(
-      HttpMessageNotReadableException e) {
-    // Get the root cause of the exception
-    var rootCause = e.getRootCause();
+  @ExceptionHandler()
+  public ResponseEntity<AppError> handleAccessDeniedException(AccessDeniedException e) {
+    var err = new AppError();
+    var statusCode = HttpStatus.FORBIDDEN.value();
 
-    // Check if the root cause is instance of InvalidEnumException
-    if (rootCause instanceof InvalidEnumException) {
-      return this.handleInvalidEnumException((InvalidEnumException) rootCause);
+    err.setStatusCode(statusCode);
+    err.setError(e.getMessage());
+
+    return ResponseEntity.status(statusCode).body(err);
+  }
+
+  @ExceptionHandler({
+    HttpMessageNotReadableException.class,
+    MethodArgumentTypeMismatchException.class
+  })
+  public ResponseEntity<AppError> handleHttpMessageNotReadableException(RuntimeException e) {
+    if (e instanceof HttpMessageNotReadableException) {
+      var ex = (HttpMessageNotReadableException) e;
+      // Get the root cause of the exception
+      var rootCause = ex.getRootCause();
+
+      // Check if the root cause is instance of InvalidEnumException
+      if (rootCause instanceof InvalidEnumException) {
+        return this.handleInvalidEnumException((InvalidEnumException) rootCause);
+      }
     }
 
     var error = new AppError();

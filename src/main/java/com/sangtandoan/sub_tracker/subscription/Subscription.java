@@ -34,4 +34,12 @@ public class Subscription {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
+
+  public void setEndDate(LocalDate startDate, SubscriptionDuration duration) {
+    this.endDate = duration.getEndDate(startDate);
+  }
+
+  public void setEndDate() {
+    this.endDate = this.duration.getEndDate(this.startDate);
+  }
 }
