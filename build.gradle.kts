@@ -63,6 +63,9 @@ dependencies {
     implementation("com.google.oauth-client:google-oauth-client-jetty:1.39.0")
     // https://mvnrepository.com/artifact/com.google.api-client/google-api-client
     implementation("com.google.api-client:google-api-client:2.8.0")
+    // https://mvnrepository.com/artifact/io.hypersistence/hypersistence-utils-hibernate-63
+    implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.10.1")
+    annotationProcessor("org.hibernate:hibernate-jpamodelgen:6.3.0.Final")
 }
 
 tasks.withType<Test> {

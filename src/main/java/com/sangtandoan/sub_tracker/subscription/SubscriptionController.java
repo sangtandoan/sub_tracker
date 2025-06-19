@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,8 +28,23 @@ public class SubscriptionController {
   public ResponseEntity<?> findAll(
       @PageableDefault(size = 10, page = 0, sort = "endDate", direction = Direction.ASC)
           Pageable pageable) {
-    System.out.println(pageable.toString());
+
     var response = this.subscriptionService.findAll(pageable);
+
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<?> search(
+      @RequestParam(required = true) String searchTerm,
+      @PageableDefault(
+              page = 0,
+              size = 10,
+              sort = {"relevance", "endDate"},
+              direction = Direction.ASC)
+          Pageable pageable) {
+
+    var response = this.subscriptionService.search(searchTerm, pageable);
 
     return ResponseEntity.ok(response);
   }

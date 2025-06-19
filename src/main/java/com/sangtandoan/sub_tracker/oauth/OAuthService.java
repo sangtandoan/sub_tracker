@@ -112,10 +112,16 @@ public class OAuthService {
     var headers = new HttpHeaders();
     headers.setBearerAuth(accessToken);
 
-    var request = new HttpEntity<GoogleUserInfo>(headers);
+    var request = new HttpEntity<String>(headers);
+    var request2 = new HttpEntity<GoogleUserInfo>(headers);
 
     // Execute request
-    return this.restTemplate.exchange(uri, HttpMethod.GET, request, GoogleUserInfo.class);
+    var response = this.restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
+    var response2 = this.restTemplate.exchange(uri, HttpMethod.GET, request2, GoogleUserInfo.class);
+    var object = response.getBody();
+    System.out.println(object);
+
+    return response2;
   }
 
   private String exchangeForAccessToken(String code, String redirectUrl, OAuthConfig clientConfig)

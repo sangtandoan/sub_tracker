@@ -5,7 +5,9 @@ import com.sangtandoan.sub_tracker.user.UserRepo;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,23 @@ public class SubscriptionService {
     var user = this.getUserFromContext();
 
     var subscriptions = this.subscriptionRepo.findAllByUser(user, pageable);
+
+    return subscriptions.map(subscriptionMapper::toDto);
+  }
+
+  public Page<SubscriptionDto> search(String searchTerm, Pageable pageable) {
+    var user = this.getUserFromContext();
+
+    // var subscriptions = this.subscriptionRepo.searchByName(user.getId(), searchTerm, pageable);
+
+    Specification<Subscription> spec =
+        Specification.allOf(
+            SubscriptionSpecifications.belongsToUser(user)
+                .and(SubscriptionSpecifications.search(searchTerm, pageable)));
+
+    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+
+    var subscriptions = this.subscriptionRepo.findAll(spec, pageable);
 
     return subscriptions.map(subscriptionMapper::toDto);
   }
