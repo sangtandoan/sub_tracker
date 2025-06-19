@@ -2,9 +2,10 @@ package com.sangtandoan.sub_tracker.subscription;
 
 import com.sangtandoan.sub_tracker.user.User;
 import com.sangtandoan.sub_tracker.user.UserRepo;
-import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ public class SubscriptionService {
   private final SubscriptionRepo subscriptionRepo;
   private final UserRepo userRepo;
 
-  public List<SubscriptionDto> findAll() {
+  public Page<SubscriptionDto> findAll(Pageable pageable) {
     var user = this.getUserFromContext();
 
-    var subscriptions = this.subscriptionRepo.findAllByUser(user);
+    var subscriptions = this.subscriptionRepo.findAllByUser(user, pageable);
 
-    return subscriptions.stream().map(subscriptionMapper::toDto).toList();
+    return subscriptions.map(subscriptionMapper::toDto);
   }
 
   public SubscriptionDto findById(UUID id) {

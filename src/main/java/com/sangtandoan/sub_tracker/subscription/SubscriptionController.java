@@ -3,6 +3,9 @@ package com.sangtandoan.sub_tracker.subscription;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +24,11 @@ public class SubscriptionController {
   private final SubscriptionService subscriptionService;
 
   @GetMapping
-  public ResponseEntity<?> findAll() {
-    var response = this.subscriptionService.findAll();
+  public ResponseEntity<?> findAll(
+      @PageableDefault(size = 10, page = 0, sort = "endDate", direction = Direction.ASC)
+          Pageable pageable) {
+    System.out.println(pageable.toString());
+    var response = this.subscriptionService.findAll(pageable);
 
     return ResponseEntity.ok(response);
   }
