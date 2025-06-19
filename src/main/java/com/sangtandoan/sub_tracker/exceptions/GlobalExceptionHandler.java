@@ -1,6 +1,6 @@
 package com.sangtandoan.sub_tracker.exceptions;
 
-import java.nio.file.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
