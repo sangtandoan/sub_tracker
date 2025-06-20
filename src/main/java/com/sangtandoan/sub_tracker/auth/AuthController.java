@@ -31,4 +31,9 @@ public class AuthController {
 
     return ResponseEntity.ok(new LoginResponse(token.toString()));
   }
+
+  @PostMapping("/logout")
+  public ResponseEntity<?> handleLogout() {
+    return ResponseEntity.ok().build();
+  }
 }

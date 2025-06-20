@@ -39,11 +39,12 @@ public class OAuthService {
   }
 
   @Transactional
-  public LoginResponse handleGoogleCallback(String code, String state, String redirectUrl) {
+  // public LoginResponse handleGoogleCallback(String code, String state, String reidrectUrl)
+  public LoginResponse handleGoogleCallback(String code, String redirectUrl) {
     // Validates state
     // TODO: change to valkey to check
-    if (!STATE.equals(state)) throw new SecurityException("Invalid state parameter");
-
+    // if (!STATE.equals(state)) throw new SecurityException("Invalid state parameter");
+    //
     // TODO: clear state
 
     try {

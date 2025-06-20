@@ -21,9 +21,9 @@ public class OAuthController {
   }
 
   @GetMapping("/google/callback")
-  public LoginResponse handleCallback(@RequestParam String code, @RequestParam String state) {
+  // public LoginResponse handleCallback(@RequestParam String code, @RequestParam String state) {
+  public LoginResponse handleCallback(@RequestParam String code, @RequestParam String redirectUrl) {
 
-    return this.oAuthService.handleGoogleCallback(
-        code, state, "http://localhost:8080/api/v1/oauth/google/callback");
+    return this.oAuthService.handleGoogleCallback(code, redirectUrl);
   }
 }
