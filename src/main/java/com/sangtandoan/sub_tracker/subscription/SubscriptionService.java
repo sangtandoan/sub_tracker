@@ -70,6 +70,7 @@ public class SubscriptionService {
     Specification<Subscription> spec =
         Specification.allOf(
             SubscriptionSpecifications.belongsToUser(user)
+                .and(SubscriptionSpecifications.isCancelled(isCancelled))
                 .and(SubscriptionSpecifications.search(searchTerm, pageable)));
 
     pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());

@@ -1,6 +1,5 @@
 package com.sangtandoan.sub_tracker.subscription;
 
-import com.sangtandoan.sub_tracker.common.filter.FilterParser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -33,7 +32,9 @@ public class SubscriptionController {
       @RequestParam(required = false) Boolean isCancelled,
       HttpServletRequest request) {
 
-    var response = this.subscriptionService.findAllWithFilters(pageable, isCancelled, request.getParameterMap());
+    var response =
+        this.subscriptionService.findAllWithFilters(
+            pageable, isCancelled, request.getParameterMap());
 
     return ResponseEntity.ok(response);
   }
@@ -41,7 +42,7 @@ public class SubscriptionController {
   @GetMapping("/search")
   public ResponseEntity<?> search(
       @RequestParam(required = true) String searchTerm,
-      @RequestParam Boolean isCancelled,
+      @RequestParam(required = false) Boolean isCancelled,
       @PageableDefault(
               page = 0,
               size = 10,
