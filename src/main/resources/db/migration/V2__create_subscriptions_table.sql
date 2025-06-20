@@ -8,4 +8,6 @@ CREATE TABLE subscriptions (
     is_cancelled boolean NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
+
+CREATE INDEX subscriptions_user_id_index ON subscriptions(user_id);

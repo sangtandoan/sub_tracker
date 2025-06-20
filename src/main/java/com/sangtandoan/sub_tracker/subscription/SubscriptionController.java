@@ -27,9 +27,10 @@ public class SubscriptionController {
   @GetMapping
   public ResponseEntity<?> findAll(
       @PageableDefault(size = 10, page = 0, sort = "endDate", direction = Direction.ASC)
-          Pageable pageable) {
+          Pageable pageable,
+      @RequestParam Boolean isCancelled) {
 
-    var response = this.subscriptionService.findAll(pageable);
+    var response = this.subscriptionService.findAll(pageable, isCancelled);
 
     return ResponseEntity.ok(response);
   }
@@ -37,6 +38,7 @@ public class SubscriptionController {
   @GetMapping("/search")
   public ResponseEntity<?> search(
       @RequestParam(required = true) String searchTerm,
+      @RequestParam Boolean isCancelled,
       @PageableDefault(
               page = 0,
               size = 10,
@@ -44,7 +46,7 @@ public class SubscriptionController {
               direction = Direction.ASC)
           Pageable pageable) {
 
-    var response = this.subscriptionService.search(searchTerm, pageable);
+    var response = this.subscriptionService.search(searchTerm, pageable, isCancelled);
 
     return ResponseEntity.ok(response);
   }

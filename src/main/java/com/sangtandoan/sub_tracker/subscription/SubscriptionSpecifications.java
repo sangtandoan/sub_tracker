@@ -65,4 +65,12 @@ public class SubscriptionSpecifications {
       return cb.equal(root.get(Subscription_.user), user);
     };
   }
+
+  public static Specification<Subscription> isCancelled(Boolean isCancelled) {
+    return (root, query, cb) -> {
+      if (isCancelled == null) return null;
+
+      return cb.equal(root.get(Subscription_.isCancelled), isCancelled);
+    };
+  }
 }

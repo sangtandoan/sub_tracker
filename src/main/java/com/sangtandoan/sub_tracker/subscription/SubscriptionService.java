@@ -19,15 +19,21 @@ public class SubscriptionService {
   private final SubscriptionRepo subscriptionRepo;
   private final UserRepo userRepo;
 
-  public Page<SubscriptionDto> findAll(Pageable pageable) {
+  public Page<SubscriptionDto> findAll(Pageable pageable, Boolean isCancelled) {
     var user = this.getUserFromContext();
 
-    var subscriptions = this.subscriptionRepo.findAllByUser(user, pageable);
+    // var subscriptions = this.subscriptionRepo.findAllByUser(user, pageable);
+    Specification<Subscription> spec =
+        Specification.allOf(
+            SubscriptionSpecifications.belongsToUser(user)
+                .and(SubscriptionSpecifications.isCancelled(isCancelled)));
+
+    var subscriptions = this.subscriptionRepo.findAll(spec, pageable);
 
     return subscriptions.map(subscriptionMapper::toDto);
   }
 
-  public Page<SubscriptionDto> search(String searchTerm, Pageable pageable) {
+  public Page<SubscriptionDto> search(String searchTerm, Pageable pageable, Boolean isCancelled) {
     var user = this.getUserFromContext();
 
     // var subscriptions = this.subscriptionRepo.searchByName(user.getId(), searchTerm, pageable);
