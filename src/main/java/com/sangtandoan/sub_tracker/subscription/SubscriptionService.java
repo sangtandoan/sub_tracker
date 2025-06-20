@@ -1,7 +1,10 @@
 package com.sangtandoan.sub_tracker.subscription;
 
+import com.sangtandoan.sub_tracker.common.filter.FilterParser;
+import com.sangtandoan.sub_tracker.common.filter.SpecificationBuilder;
 import com.sangtandoan.sub_tracker.user.User;
 import com.sangtandoan.sub_tracker.user.UserRepo;
+import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,28 @@ public class SubscriptionService {
         Specification.allOf(
             SubscriptionSpecifications.belongsToUser(user)
                 .and(SubscriptionSpecifications.isCancelled(isCancelled)));
+
+    var subscriptions = this.subscriptionRepo.findAll(spec, pageable);
+
+    return subscriptions.map(subscriptionMapper::toDto);
+  }
+
+  public Page<SubscriptionDto> findAllWithFilters(Pageable pageable, Boolean isCancelled, Map<String, String[]> queryParams) {
+    var user = this.getUserFromContext();
+
+    // Parse filter criteria from query parameters
+    var filterCriteria = FilterParser.parseFilters(queryParams);
+    
+    // Build base specification with user ownership and cancellation status
+    Specification<Subscription> spec = Specification.allOf(
+        SubscriptionSpecifications.belongsToUser(user)
+            .and(SubscriptionSpecifications.isCancelled(isCancelled)));
+
+    // Add dynamic filters if present
+    if (!filterCriteria.isEmpty()) {
+      Specification<Subscription> filterSpec = SpecificationBuilder.buildSpecification(filterCriteria);
+      spec = spec.and(filterSpec);
+    }
 
     var subscriptions = this.subscriptionRepo.findAll(spec, pageable);
 

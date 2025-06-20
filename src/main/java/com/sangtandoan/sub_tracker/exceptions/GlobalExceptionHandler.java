@@ -1,6 +1,5 @@
 package com.sangtandoan.sub_tracker.exceptions;
 
-import org.springframework.security.access.AccessDeniedException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
     List<String> validValues =
         Arrays.stream(enumClass.getEnumConstants())
-            .map(Enum::toString)
+            .map(en -> en.toString() + " | " + en.toString().toLowerCase())
             .collect(Collectors.toList());
 
     err.setError(Map.of("message", e.getMessage(), "validValues", validValues));

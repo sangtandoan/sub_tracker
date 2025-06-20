@@ -10,7 +10,7 @@ import lombok.Getter;
 public enum SubscriptionDuration {
   DAILY(1, "Daily"),
   MONTHLY(30, "Monthly"),
-  SIX_MONTH(180, "6 Months"),
+  SIX_MONTHS(180, "6 Months"),
   WEEKLY(7, "Weekly"),
   YEARLY(365, "Yearly");
 
@@ -48,7 +48,7 @@ public enum SubscriptionDuration {
       case MONTHLY -> {
         return startDate.plusMonths(1);
       }
-      case SIX_MONTH -> {
+      case SIX_MONTHS -> {
         return startDate.plusMonths(6);
       }
       case YEARLY -> {
@@ -68,8 +68,10 @@ public enum SubscriptionDuration {
     if (displayName == null) {
       return null;
     }
+    displayName = displayName.toLowerCase();
+
     for (SubscriptionDuration duration : values()) {
-      if (duration.getDisplayName().equals(displayName)) {
+      if (duration.getDisplayName().toLowerCase().equals(displayName)) {
         return duration;
       }
     }

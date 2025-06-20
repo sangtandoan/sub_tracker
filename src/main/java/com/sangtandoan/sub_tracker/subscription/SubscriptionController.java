@@ -1,5 +1,7 @@
 package com.sangtandoan.sub_tracker.subscription;
 
+import com.sangtandoan.sub_tracker.common.filter.FilterParser;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -28,9 +30,10 @@ public class SubscriptionController {
   public ResponseEntity<?> findAll(
       @PageableDefault(size = 10, page = 0, sort = "endDate", direction = Direction.ASC)
           Pageable pageable,
-      @RequestParam Boolean isCancelled) {
+      @RequestParam(required = false) Boolean isCancelled,
+      HttpServletRequest request) {
 
-    var response = this.subscriptionService.findAll(pageable, isCancelled);
+    var response = this.subscriptionService.findAllWithFilters(pageable, isCancelled, request.getParameterMap());
 
     return ResponseEntity.ok(response);
   }
