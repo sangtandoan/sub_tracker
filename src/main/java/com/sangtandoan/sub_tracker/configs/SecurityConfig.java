@@ -38,7 +38,10 @@ public class SecurityConfig {
         .cors(c -> c.configurationSource(this.corsConfigurationSource()))
         .authorizeHttpRequests(
             c -> {
-              this.securityRules.forEach(rule -> rule.register(c));
+              this.securityRules.forEach(
+                  rule -> {
+                    rule.register(c);
+                  });
 
               c.anyRequest().authenticated();
             })
@@ -47,7 +50,8 @@ public class SecurityConfig {
             c -> {
               c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
               c.accessDeniedHandler(
-                  (request, response, exception) -> response.setStatus(HttpStatus.FORBIDDEN.value()));
+                  (request, response, exception) ->
+                      response.setStatus(HttpStatus.FORBIDDEN.value()));
             });
 
     return http.build();
