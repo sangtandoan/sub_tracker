@@ -3,6 +3,7 @@ package com.sangtandoan.sub_tracker.subscription;
 import com.sangtandoan.sub_tracker.user.User;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
@@ -71,6 +72,15 @@ public class SubscriptionSpecifications {
       if (isCancelled == null) return null;
 
       return cb.equal(root.get(Subscription_.isCancelled), isCancelled);
+    };
+  }
+
+  public static Specification<Subscription> expiringInDays(int days) {
+    return (root, query, cb) -> {
+      var exactDate = LocalDate.now().plusDays(days);
+      var path = root.get(Subscription_.endDate);
+
+      return cb.and(cb.equal(path, exactDate), cb.greaterThan(path, exactDate.minusDays(1)));
     };
   }
 }

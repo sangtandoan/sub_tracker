@@ -37,6 +37,7 @@ public class SpecificationBuilder {
     };
   }
 
+  @SuppressWarnings("unchecked")
   private static <T> Predicate buildPredicate(
       FilterCriteria criteria, Root<T> root, CriteriaBuilder cb) {
     Path<Object> path = getPath(root, criteria.field());
@@ -45,12 +46,26 @@ public class SpecificationBuilder {
     return switch (criteria.operation()) {
       case EQUALS -> cb.equal(path, value);
       case NOT_EQUALS -> cb.notEqual(path, value);
-      case GREATER_THAN -> cb.greaterThan(path.as(Comparable.class), (Comparable) value);
-      case GREATER_THAN_OR_EQUAL ->
-          cb.greaterThanOrEqualTo(path.as(Comparable.class), (Comparable) value);
-      case LESS_THAN -> cb.lessThan(path.as(Comparable.class), (Comparable) value);
-      case LESS_THAN_OR_EQUAL ->
-          cb.lessThanOrEqualTo(path.as(Comparable.class), (Comparable) value);
+      case GREATER_THAN -> {
+        @SuppressWarnings("rawtypes")
+        Path comparablePath = path;
+        yield cb.greaterThan(comparablePath, (Comparable) value);
+      }
+      case GREATER_THAN_OR_EQUAL -> {
+        @SuppressWarnings("rawtypes")
+        Path comparablePath = path;
+        yield cb.greaterThanOrEqualTo(comparablePath, (Comparable) value);
+      }
+      case LESS_THAN -> {
+        @SuppressWarnings("rawtypes")
+        Path comparablePath = path;
+        yield cb.lessThan(comparablePath, (Comparable) value);
+      }
+      case LESS_THAN_OR_EQUAL -> {
+        @SuppressWarnings("rawtypes")
+        Path comparablePath = path;
+        yield cb.lessThanOrEqualTo(comparablePath, (Comparable) value);
+      }
       case LIKE -> cb.like(path.as(String.class), "%" + value + "%");
       case IN -> {
         if (criteria.values() != null && !criteria.values().isEmpty()) {

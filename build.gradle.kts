@@ -66,6 +66,8 @@ dependencies {
     // https://mvnrepository.com/artifact/io.hypersistence/hypersistence-utils-hibernate-63
     implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.10.1")
     annotationProcessor("org.hibernate:hibernate-jpamodelgen:6.3.0.Final")
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.5.0")
 }
 
 tasks.withType<Test> {

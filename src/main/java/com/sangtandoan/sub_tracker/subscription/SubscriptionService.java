@@ -4,6 +4,7 @@ import com.sangtandoan.sub_tracker.common.filter.FilterParser;
 import com.sangtandoan.sub_tracker.common.filter.SpecificationBuilder;
 import com.sangtandoan.sub_tracker.user.User;
 import com.sangtandoan.sub_tracker.user.UserRepo;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -36,20 +37,23 @@ public class SubscriptionService {
     return subscriptions.map(subscriptionMapper::toDto);
   }
 
-  public Page<SubscriptionDto> findAllWithFilters(Pageable pageable, Boolean isCancelled, Map<String, String[]> queryParams) {
+  public Page<SubscriptionDto> findAllWithFilters(
+      Pageable pageable, Boolean isCancelled, Map<String, String[]> queryParams) {
     var user = this.getUserFromContext();
 
     // Parse filter criteria from query parameters
     var filterCriteria = FilterParser.parseFilters(queryParams);
-    
+
     // Build base specification with user ownership and cancellation status
-    Specification<Subscription> spec = Specification.allOf(
-        SubscriptionSpecifications.belongsToUser(user)
-            .and(SubscriptionSpecifications.isCancelled(isCancelled)));
+    Specification<Subscription> spec =
+        Specification.allOf(
+            SubscriptionSpecifications.belongsToUser(user)
+                .and(SubscriptionSpecifications.isCancelled(isCancelled)));
 
     // Add dynamic filters if present
     if (!filterCriteria.isEmpty()) {
-      Specification<Subscription> filterSpec = SpecificationBuilder.buildSpecification(filterCriteria);
+      Specification<Subscription> filterSpec =
+          SpecificationBuilder.buildSpecification(filterCriteria);
       spec = spec.and(filterSpec);
     }
 
@@ -117,6 +121,15 @@ public class SubscriptionService {
 
   public void delete(UUID id) {
     this.subscriptionRepo.deleteById(id);
+  }
+
+  public List<Subscription> findExpiringInDays(int days) {
+    Specification<Subscription> spec =
+        Specification.allOf(
+            SubscriptionSpecifications.isCancelled(false)
+                .and(SubscriptionSpecifications.expiringInDays(days)));
+
+    return this.subscriptionRepo.findAll(spec);
   }
 
   private User getUserFromContext() {
