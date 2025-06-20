@@ -93,7 +93,7 @@ public class SubscriptionService {
 
   public SubscriptionDto create(CreateSubscriptionRequest request) {
     // Adds startDate with Duration to create endDate
-    var subscription = this.subscriptionMapper.toEnitity(request);
+    var subscription = this.subscriptionMapper.toEntity(request);
     var endDate = request.duration().getEndDate(request.startDate());
     subscription.setEndDate(endDate);
 

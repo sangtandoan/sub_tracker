@@ -9,4 +9,4 @@ public record SubscriptionDto(
     LocalDate startDate,
     LocalDate endDate,
     SubscriptionDuration duration,
-    boolean isCancelled) {}
+    Boolean isCancelled) {}

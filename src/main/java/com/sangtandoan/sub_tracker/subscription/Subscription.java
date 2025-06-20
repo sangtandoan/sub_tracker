@@ -32,7 +32,8 @@ public class Subscription {
 
   private LocalDate endDate;
 
-  private boolean isCancelled = false;
+  // Do not use primitive type boolean, or @Getter and @Setter can not generate correctly
+  private Boolean isCancelled = false;
 
   private SubscriptionDuration duration;
 

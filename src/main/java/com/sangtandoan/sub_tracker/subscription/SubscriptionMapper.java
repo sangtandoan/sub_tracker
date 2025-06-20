@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 public interface SubscriptionMapper {
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-  Subscription toEnitity(CreateSubscriptionRequest request);
+  Subscription toEntity(CreateSubscriptionRequest request);
 
   SubscriptionDto toDto(Subscription subscription);
 
