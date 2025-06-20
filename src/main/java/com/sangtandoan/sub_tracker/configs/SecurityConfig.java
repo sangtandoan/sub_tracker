@@ -3,7 +3,8 @@ package com.sangtandoan.sub_tracker.configs;
 import com.sangtandoan.sub_tracker.common.SecurityRules;
 import com.sangtandoan.sub_tracker.filters.JwtAuthenticationFilter;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -24,12 +25,15 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
   private final List<SecurityRules> securityRules;
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+  @Value("${frontend.url}")
+  private String frontendUrl;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -62,7 +66,7 @@ public class SecurityConfig {
     var config = new CorsConfiguration();
 
     // config for cors
-    config.setAllowedOriginPatterns(List.of("*"));
+    config.setAllowedOriginPatterns(List.of(this.frontendUrl));
 
     // register config to source
     var source = new UrlBasedCorsConfigurationSource();
