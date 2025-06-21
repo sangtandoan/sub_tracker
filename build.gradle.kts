@@ -75,7 +75,7 @@ tasks.withType<Test> {
 }
 
 flyway {
-    url = "jdbc:postgresql://localhost:5432/${System.getenv("POSTGRES_DB")}"
+    url = "${System.getenv("POSTGRES_DB")}"
     user = "${System.getenv("POSTGRES_USER")}"
     password = "${System.getenv("POSTGRES_PASSWORD")}"
     cleanDisabled = false
