@@ -15,6 +15,29 @@ services:
     networks:
       - sub_tracker_network
 
+  app:
+    build: .
+    container_name: sub_tracker_app
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-sub_tracker}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-sub_tracker_user}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-sub_tracker_password}
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - EMAIL_ID=${EMAIL_ID}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - VERIFY_EMAIL_HOST=${VERIFY_EMAIL_HOST:-http://localhost:8080}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - sub_tracker_network
+
 volumes:
   postgres_data:
     driver: local

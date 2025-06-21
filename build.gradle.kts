@@ -75,8 +75,8 @@ tasks.withType<Test> {
 }
 
 flyway {
-    url = "${System.getenv("POSTGRES_DB")}"
-    user = "${System.getenv("POSTGRES_USER")}"
-    password = "${System.getenv("POSTGRES_PASSWORD")}"
+    url = "${System.getenv("SPRING_DATASOURCE_URL")}"
+    user = "${System.getenv("SPRING_DATASOURCE_USERNAME")}"
+    password = "${System.getenv("SPRING_DATASOURCE_PASSWORD")}"
     cleanDisabled = false
 }

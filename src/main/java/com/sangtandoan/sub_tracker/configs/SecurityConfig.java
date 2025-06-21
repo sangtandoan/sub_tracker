@@ -3,8 +3,6 @@ package com.sangtandoan.sub_tracker.configs;
 import com.sangtandoan.sub_tracker.common.SecurityRules;
 import com.sangtandoan.sub_tracker.filters.JwtAuthenticationFilter;
 import java.util.List;
-
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,8 +42,7 @@ public class SecurityConfig {
         .cors(c -> c.configurationSource(this.corsConfigurationSource()))
         .authorizeHttpRequests(
             c -> {
-              this.securityRules.forEach(
-                  rule -> rule.register(c));
+              this.securityRules.forEach(rule -> rule.register(c));
 
               c.anyRequest().authenticated();
             })
