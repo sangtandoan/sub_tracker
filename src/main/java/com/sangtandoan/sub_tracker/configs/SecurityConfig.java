@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -42,6 +43,11 @@ public class SecurityConfig {
         .cors(c -> c.configurationSource(this.corsConfigurationSource()))
         .authorizeHttpRequests(
             c -> {
+
+              // Allow all OPTIONS requests (CORS preflight) - should be first
+              // If not set this, cors will happend even you have config it
+              c.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+
               this.securityRules.forEach(rule -> rule.register(c));
 
               c.anyRequest().authenticated();
@@ -62,10 +68,29 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     var config = new CorsConfiguration();
 
-    // config for cors
-    config.setAllowedOriginPatterns(List.of(this.frontendUrl));
+    // Configure allowed origins
+    if ("*".equals(this.frontendUrl)) {
+      config.setAllowedOriginPatterns(List.of("*"));
+    } else {
+      config.setAllowedOrigins(List.of(this.frontendUrl));
+    }
 
-    // register config to source
+    // Configure allowed methods
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+    // Configure allowed headers
+    config.setAllowedHeaders(List.of("*"));
+
+    // Allow credentials (for authentication)
+    config.setAllowCredentials(true);
+
+    // Configure exposed headers (if your backend sends custom headers)
+    config.setExposedHeaders(List.of("Authorization", "Content-Type"));
+
+    // Configure max age for preflight requests (in seconds)
+    config.setMaxAge(3600L);
+
+    // Register config to source
     var source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
 

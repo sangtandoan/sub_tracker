@@ -2,7 +2,7 @@ CREATE TABLE users (
     id uuid PRIMARY KEY,
     email text UNIQUE NOT NULL,
     name text NOT NULL,
-    password bytea NOT NULL,
+    password bytea,
     email_verified boolean DEFAULT false NOT NULL,
     created_at timestamp NOT NULL DEFAULT now(),
     updated_at timestamp NOT NULL DEFAULT now()
