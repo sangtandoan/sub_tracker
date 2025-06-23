@@ -1,6 +1,6 @@
 # Subdub Backend
 
-**Subdub** is a subscription tracking backend service, built in Java with Spring Boot, that helps users monitor and manage their recurring subscriptions. It notifies users when subscriptions are about to expire so they can cancel before auto-renewal, preventing unwanted charges.
+**Subdub** is a subscription tracking backend service, built in **Java with Spring Boot**, that helps users monitor and manage their recurring subscriptions. It notifies users when subscriptions are about to expire so they can cancel before auto-renewal, preventing unwanted charges.
 
 ## 🚀 Features
 
@@ -17,7 +17,7 @@
 
 - **Automated Expiry Checks**
 
-    - **Cron-style job** implemented using Spring Boot **schedule task**
+    - **Cron-style job** implemented using Spring Boot **scheduling**
     - Daily scans for subscriptions nearing expiry
     - Sends **email notifications** to users
 
@@ -33,7 +33,7 @@
 - **Authentication:** JWT and OAuth2
 - **Database:** PostgreSQL (via Hibernate and Spring Data Jpa)
 - **Email:** SMTP via Java’s `JavaEmailSender`
-- **Scheduling:** Spring Boot **schedule task**
+- **Scheduling:** Spring Boot **scheduling**
 
 ## 🔄 Scheduled Tasks
 
